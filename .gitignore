@@ -1,0 +1,11 @@
+.vscode
+.idea
+node_modules
+
+!dist/.gitignore
+dist/*
+
+build/dist/*
+app/*
+
+config.js

@@ -1,0 +1,42 @@
+{
+  "name": "discuss",
+  "description": "Private Discuss, La solution de communication privee, dediee, sur mesure et chiffree",
+  "version": "4.0.0",
+  "main": "./main.js",
+  "author": "Piman Security",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder build --config=electron-builder.yml --mac  --publish never",
+    "deploy": "electron-builder build --config=electron-builder.yml --mac  --publish always"
+  },
+  "dependencies": {
+    "electron-context-menu": "^0.9.1",
+    "electron-dl": "^1.12.0",
+    "electron-progressbar": "^1.1.0",
+    "electron-updater": "^4.0.0",
+    "image-data-uri": "^2.0.0",
+    "offline-js": "^0.7.19"
+  },
+  "devDependencies": {
+    "electron": "7.1.2",
+    "electron-builder": "^21.2.0",
+    "electron-installer-dmg": "^3.0.0",
+    "electron-notarize": "^1.0.0",
+    "electron-packager": "^14.1.0",
+    "electron-winstaller": "^4.0.0"
+  },
+  "build": "electron-builder build --mac --win --publish never",
+  "deploy": "electron-builder build --mac --win --publish always",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kawtarnouara/private-discuss-auto-update.git"
+  },
+  "mac": {
+    "title": "Private Discuss",
+    "hardenedRuntime": true
+  },
+  "mas": {
+    "entitlements": "build/entitlements.mac.plist",
+    "entitlementsInherit": "build/entitlements.mac.inherit.plist"
+  }
+}

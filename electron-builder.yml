@@ -1,0 +1,8 @@
+directories:
+  output: app
+  buildResources: build
+appId: com.private.dicuss
+productName: Private Discuss
+publish:
+  provider: github
+  token: token

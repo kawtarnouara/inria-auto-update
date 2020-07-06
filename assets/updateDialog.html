@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            margin: 20px;
+            margin-bottom: 0;
+            font: 13px normal Verdana, Arial, "sans-serif";
+            overflow: hidden;
+        }
+
+        button {
+            padding: 5px 15px 7px 15px;
+            border: none;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        button#open-file {
+            background-color: #5B5BE5;
+            color: white;
+        }
+
+        button#restartButton {
+            background-color: white;
+            color: #5B5BE5;
+            /*margin-left: 10px;*/
+        }
+
+        #title{
+            height: 26px;
+            overflow: auto;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 5px 0;
+            word-break: break-all;
+        }
+
+        #details{
+            height: 20px;
+            margin: 5px 0;
+            padding: 5px 0;
+            margin-bottom: 20px;
+            word-break: break-all;
+        }
+
+        @-webkit-keyframes indeterminate{
+            0%{ left: -35%; right: 100%; }
+            60%{ left: 100%; right: -90%; }
+            100%{ left: 100%; right: -90%; }
+        }
+
+        @keyframes indeterminate{
+            0%{ left: -35%; right: 100%; }
+            60%{ left: 100%; right: -90%; }
+            100%{ left: 100%; right: -90%; }
+        }
+
+        @-webkit-keyframes indeterminate-short{
+            0%{ left: -200%; right: 100%; }
+            60%{ left: 107%; right: -8%; }
+            100%{ left: 107%; right: -8%; }
+        }
+
+        @keyframes indeterminate-short{
+            0%{ left: -200%; right: 100%; }
+            60%{ left: 107%; right: -8%; }
+            100%{ left: 107%; right: -8%; }
+        }
+    </style>
+</head>
+<body>
+<div id="title"></div>
+<div id="details"></div>
+<div class="centered" id="buttons">
+    <button onclick="restartApp()" id="restartButton">Redémarrer maintenant</button>
+</div>
+<script>
+    // alert(findGetParameter('file')+" "+findGetParameter('file-location'));
+    function findGetParameter(parameterName) {
+        let result = null,
+            tmp = [];
+        location.search
+            .substr(1)
+            .split("&")
+            .forEach(function (item) {
+                tmp = item.split("=");
+                if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+            });
+        return result;
+    }
+
+    const title = document.getElementById('title');
+    const details = document.getElementById('details');
+    const buttons = document.getElementById('buttons');
+
+    title.innerText = findGetParameter('title');
+    details.innerText = findGetParameter('details');
+    const withButtons = findGetParameter('withButtons');
+    const success = findGetParameter('success');
+
+    if (withButtons === null || withButtons == 0 || withButtons === 'false') {
+        buttons.hidden = true;
+    }
+    if (success !== null) {
+        if (success == 0 || success === 'false') {
+            title.style.color = "#e70e0e";
+        } else {
+            title.style.color = "#4CAF50";
+        }
+    }
+
+    const { ipcRenderer } = require('electron');
+
+    function restartApp() {
+        ipcRenderer.send('restart_app');
+    }
+
+</script>
+</body>
+</html>

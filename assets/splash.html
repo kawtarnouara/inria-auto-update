@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello</title>
+    <style>
+        .spinner {
+            position: absolute;
+            top: 75%;
+            left: 50%;
+            -ms-transform: translate(-50%,-50%); /* IE 9 */
+            -webkit-transform: translate(-50%,-50%); /* Safari */
+            transform: translate(-50%,-50%); /* Standard syntax */
+            width: 200px;
+            background-image: url('./loading.gif');
+            background-size: 100%;
+            height: 200px;
+            background-repeat: no-repeat;
+
+        }
+        .footer {
+            position: absolute;
+            font-family: sans-serif;
+            font-size: 11px;
+            bottom: 12px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+        }
+        .centered {
+            text-align: center;
+            margin: 50px 0;
+        }
+        #interrupted {
+            margin: 25px 0 !important;
+        }
+    </style>
+</head>
+<body style="overflow: hidden;">
+    <div class="centered" style="text-align: center; margin: 50px 0;" id="loading">
+        <img src="./logo_discuss.svg" alt="">
+        <div class="spinner"></div>
+        <div class="footer">
+            © Powered by PIMAN SECURITY
+        </div>
+    </div>
+    <div class="centered" id="interrupted" style="display: none;">
+        <img src="./no-internet.png" alt="">
+        <p>Oh non :( la connexion a échoué</p>
+    </div>
+    <script>
+        if (findGetParameter('connection') == 1) {
+            document.getElementById("interrupted").style.display = "none";
+            document.getElementById("loading").style.display = "block";
+        } else {
+            document.getElementById("interrupted").style.display = "block";
+            document.getElementById("loading").style.display = "none";
+        }
+        function findGetParameter(parameterName) {
+            let result = null,
+                tmp = [];
+            location.search
+                .substr(1)
+                .split("&")
+                .forEach(function (item) {
+                    tmp = item.split("=");
+                    if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+                });
+            return result;
+        }
+
+        const { ipcRenderer } = require('electron');
+        const updateOnlineStatus = () => {
+            ipcRenderer.send('online-status-changed', navigator.onLine ? 'online' : 'offline');
+        }
+
+        window.addEventListener('online',  updateOnlineStatus);
+        window.addEventListener('offline',  updateOnlineStatus);
+
+        updateOnlineStatus()
+    </script>
+</body>
+</html>
