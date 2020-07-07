@@ -29,7 +29,7 @@
   "deploy": "electron-builder build --mac --win --publish always",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kawtarnouara/private-discuss-auto-update.git"
+    "url": "https://github.com/kawtarnouara/inria-auto-update.git"
   },
   "mac": {
     "title": "Private Discuss",
