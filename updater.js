@@ -55,8 +55,11 @@ exports.initUpdater = (mainWindow) => {
     autoUpdater.on('download-progress', (progressObj) => {
         if (progressBar != null) {
             progressBar.value = progressObj.percent;
-            let log_message = "Vitesse de téléchargement: " + progressObj.bytesPerSecond + "\n";
-            progressBar.detail = log_message + `Téléchargé ${progressObj.transferred} sur ${progressObj.total} ...`;
+            let MbytesPerSecond = parseFloat((progressObj.bytesPerSecond / 1000000).toFixed(2));
+            let log_message = "Vitesse de téléchargement: " + MbytesPerSecond + "MB/s  \n";
+            let transferredMBytes = parseFloat((progressObj.transferred / 1000000).toFixed(2));
+            let totalMBytes = parseFloat((progressObj.total / 1000000).toFixed(2));
+            progressBar.detail = log_message + `Téléchargé ${transferredMBytes} MB sur ${totalMBytes} MB ...`;
         }
         // sendStatusToWindow(log_message);
     });
