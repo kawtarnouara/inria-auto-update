@@ -6,7 +6,7 @@
 
 - Edit `package.json` :
 
-    - "name": "Private Discuss"
+    - "name": "Inria"
     - "version": "x.x.x"
     - "main": "./main.js"
 
@@ -14,7 +14,7 @@
 
 - Edit `package.json` :
 
-    - "name": "Private Discuss"
+    - "name": "Inria"
     - "version": "x.x.x"
     - "main": "./main_private.js"
 

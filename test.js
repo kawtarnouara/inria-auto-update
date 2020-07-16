@@ -5,7 +5,7 @@ app.on('ready', createWindow);
 
 async function createWindow() {
     dialogFile = new BrowserWindow({
-        title: "Mise à jour - Private Discuss",
+        title: "Mise à jour - Inria",
         width: 500,
         height: 170,
         backgroundColor: '#eeeeee',

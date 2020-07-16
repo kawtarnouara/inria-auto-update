@@ -21,7 +21,7 @@ exports.createWindow =  function(dev = true) {
     let win = new BrowserWindow({
         // width: 600,
         // height: 600,
-        title: "Private Discuss",
+        title: "Inria",
         // fullscreen: true,
         width: 1400,
         height: 900,
@@ -64,7 +64,7 @@ exports.createWindow =  function(dev = true) {
             // win.webContents.executeJavaScript('localStorage.getItem("jwt_token")').then(function(value){
 
             Object.assign(options, {
-                title: "Private Discuss Conf Call",
+                title: "Inria Conf Call",
                 modal: false,
                 // parent: win,
                 width: 1000,
@@ -188,7 +188,7 @@ function downloadManager2(win) {
                     if (progressBar === null) {
                         progressBar = new ProgressBar({
                             indeterminate: false,
-                            title: 'Téléchargement - Private Discuss',
+                            title: 'Téléchargement - Inria',
                             text: 'En téléchargement ...',
                             detail: 'Préparation des données ...',
                             closeOnComplete: false,
@@ -223,7 +223,7 @@ function downloadManager2(win) {
                     let path = downloadItem.getSavePath();
                     progressBar.close();
                     let dialogFile = new BrowserWindow({
-                        title: "Téléchargement - Private Discuss",
+                        title: "Téléchargement - Inria",
                         width: 500,
                         height: 170,
                         backgroundColor: '#eeeeee',
@@ -253,7 +253,7 @@ function getMenuBeforeAuth(win) {
     return [{
         label: "Application",
         submenu: [
-            {label: "À propos de Private Discuss", selector: "orderFrontStandardAboutPanel:"},
+            {label: "À propos de Inria", selector: "orderFrontStandardAboutPanel:"},
             {type: "separator"},
             {
                 label: "Quit", accelerator: "Command+Q", click: function () {
@@ -291,7 +291,7 @@ function getMenuAfterAuth(win) {
     return [{
         label: "Application",
         submenu: [
-            {label: "À propos de Private Discuss", selector: "orderFrontStandardAboutPanel:"},
+            {label: "À propos de Inria", selector: "orderFrontStandardAboutPanel:"},
             // { label: "Mon profil", selector: "CmdOrCtrl+,",  click: function() { shell.openExternal('https://discuss.piman2-0.fr/account/profil'); }},
             {type: "separator"},
             {

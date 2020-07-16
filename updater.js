@@ -18,7 +18,7 @@ exports.initUpdater = (mainWindow) => {
         if (!progressBar) {
             progressBar = new ProgressBar({
                 indeterminate: false,
-                title: 'Mise à jour - Private Discuss',
+                title: 'Mise à jour - Inria',
                 text: 'En téléchargement ...',
                 detail: 'Préparation de la nouvelle version ...',
                 closeOnComplete: false,
@@ -45,7 +45,7 @@ exports.initUpdater = (mainWindow) => {
         // sendStatusToWindow('Error in auto-updater. ' + err);
         // mainWindow.webContents.send('update_error');
         progressBar.close();
-        updateDialog('Mise à jour - Private Discuss', {
+        updateDialog('Mise à jour - Inria', {
             title: 'Mise à jour échouée',
             details: "Impossible de terminer la mises à jour de votre application !",
             withButtons: 0,
@@ -70,7 +70,7 @@ exports.initUpdater = (mainWindow) => {
         // }, 5000)
         // mainWindow.webContents.send('update_downloaded');
         progressBar.close();
-         dialogUpdate = updateDialog('Mise à jour - Private Discuss', {
+         dialogUpdate = updateDialog('Mise à jour - Inria', {
             title: 'Mise à jour terminée',
             details: "Votre application a été mise à jour. Vous devez redémarrer l'application maintenant",
             withButtons: 1,

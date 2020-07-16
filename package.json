@@ -1,7 +1,7 @@
 {
   "name": "discuss",
-  "description": "Private Discuss, La solution de communication privee, dediee, sur mesure et chiffree",
-  "version": "4.0.1",
+  "description": "Inria, La solution de communication privee, dediee, sur mesure et chiffree",
+  "version": "4.0.4",
   "main": "./main.js",
   "author": "Piman Security",
   "scripts": {
@@ -32,7 +32,7 @@
     "url": "https://github.com/kawtarnouara/inria-auto-update.git"
   },
   "mac": {
-    "title": "Private Discuss",
+    "title": "Inria",
     "hardenedRuntime": true
   },
   "mas": {

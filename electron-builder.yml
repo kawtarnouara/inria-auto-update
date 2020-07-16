@@ -2,7 +2,7 @@ directories:
   output: app
   buildResources: build
 appId: com.private.dicuss
-productName: Private Discuss
+productName: Inria
 publish:
   provider: github
-  token: token
+  token: 5a329647bc231aa806521ff224a9b56add1a3b87

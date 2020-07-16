@@ -58,7 +58,7 @@ exports.downloadManager = function () {
                     if (progressBar === null) {
                         progressBar = new ProgressBar({
                             indeterminate: false,
-                            title: 'Téléchargement - Private Discuss',
+                            title: 'Téléchargement - Inria',
                             text: 'En téléchargement ...',
                             detail: 'Préparation des données ...',
                             closeOnComplete: false,
@@ -93,7 +93,7 @@ exports.downloadManager = function () {
                     let path = downloadItem.getSavePath();
                     progressBar.close();
                     let dialogFile = new BrowserWindow({
-                        title: "Téléchargement - Private Discuss",
+                        title: "Téléchargement - Inria",
                         width: 500,
                         height: 170,
                         backgroundColor: '#eeeeee',
