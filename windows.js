@@ -3,6 +3,7 @@ const ProgressBar = require('electron-progressbar');
 const { downloadManager } = require('./download');
 const path = require('path');
 const urlM = require('url');
+const {autoUpdater} = require("electron-updater");
 
 exports.createWindow =  function(dev = true) {
     // Setup permission handler
@@ -254,6 +255,11 @@ function getMenuBeforeAuth(win) {
         label: "Application",
         submenu: [
             {label: "À propos de Inria", selector: "orderFrontStandardAboutPanel:"},
+            {
+                label: "Vérifier les mises à jour",  click: function () {
+                    autoUpdater.checkForUpdatesAndNotify();
+                }
+            },
             {type: "separator"},
             {
                 label: "Quit", accelerator: "Command+Q", click: function () {
@@ -292,6 +298,11 @@ function getMenuAfterAuth(win) {
         label: "Application",
         submenu: [
             {label: "À propos de Inria", selector: "orderFrontStandardAboutPanel:"},
+            {
+                label: "Vérifier les mises à jour",  click: function () {
+                    autoUpdater.checkForUpdatesAndNotify();
+                }
+            },
             // { label: "Mon profil", selector: "CmdOrCtrl+,",  click: function() { shell.openExternal('https://discuss.piman2-0.fr/account/profil'); }},
             {type: "separator"},
             {
