@@ -1,19 +1,20 @@
 {
   "name": "discuss",
   "description": "Inria, La solution de communication privee, dediee, sur mesure et chiffree",
-  "version": "4.0.4",
+  "version": "4.0.8",
   "main": "./main.js",
   "author": "Piman Security",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder build --config=electron-builder.yml --mac  --publish never",
-    "deploy": "electron-builder build --config=electron-builder.yml --mac  --publish always"
+    "build": "electron-builder --publish never",
+    "deploy": "electron-builder --publish always"
   },
   "dependencies": {
     "electron-context-menu": "^0.9.1",
     "electron-dl": "^1.12.0",
     "electron-progressbar": "^1.1.0",
     "electron-updater": "^4.0.0",
+    "fs": "0.0.1-security",
     "image-data-uri": "^2.0.0",
     "offline-js": "^0.7.19"
   },
@@ -25,18 +26,39 @@
     "electron-packager": "^14.1.0",
     "electron-winstaller": "^4.0.0"
   },
-  "build": "electron-builder build --mac --win --publish never",
-  "deploy": "electron-builder build --mac --win --publish always",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kawtarnouara/inria-auto-update.git"
+  "build": {
+    "appId": "com.private.discuss",
+    "mac": {
+      "category": "productivity",
+      "gatekeeperAssess": false,
+      "hardenedRuntime": true,
+      "entitlements": "./build/entitlements.mac.plist",
+      "entitlementsInherit": "./build/entitlements.mac.inherit.plist"
+    },
+    "directories": {
+      "output": "app",
+      "buildResources": "build"
+    },
+    "productName": "Private Discuss",
+    "publish": {
+      "provider": "github",
+      "token": "80ab8a6f230f8ef28898c152907cae3b2eaa43b6"
+    }
   },
   "mac": {
     "title": "Inria",
-    "hardenedRuntime": true
+    "hardenedRuntime": true,
+    "gatekeeperAssess": false,
+    "entitlements": "build/entitlements.mac.plist",
+    "entitlementsInherit": "build/entitlements.mac.inherit.plist",
+    "afterSign": "/Users/kawtar/apps/inria-discuss-electron-update/electron/notarize.js"
   },
   "mas": {
     "entitlements": "build/entitlements.mac.plist",
     "entitlementsInherit": "build/entitlements.mac.inherit.plist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kawtarnouara/inria-auto-update.git"
   }
 }

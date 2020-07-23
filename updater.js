@@ -3,6 +3,7 @@ const {autoUpdater} = require("electron-updater");
 const ProgressBar = require('electron-progressbar');
 const { BrowserWindow } = require('electron')
 var dialogUpdate;
+exports.showNoUpdatesDialog = false;
 exports.initUpdater = (mainWindow) => {
 
     autoUpdater.requestHeaders = { "PRIVATE-TOKEN": "Yra7hy4NWZPvgsNFWWo_" };
@@ -39,7 +40,15 @@ exports.initUpdater = (mainWindow) => {
         }
     });
     autoUpdater.on('update-not-available', (info) => {
-        // sendStatusToWindow('Update not available.');
+        autoUpdater.on('update-not-available', () => {
+            if (showNoUpdatesDialog){
+                dialog.showMessageBox({
+                    title: 'Piman Discuss',
+                    message: 'Piman Discuss est à jour.',
+                    detail: 'Version ' + app.getVersion()
+                });
+            }
+        });
     });
     autoUpdater.on('error', (err) => {
         // sendStatusToWindow('Error in auto-updater. ' + err);
