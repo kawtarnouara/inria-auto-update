@@ -5,7 +5,7 @@ const path = require('path');
 const urlM = require('url');
 const {autoUpdater} = require("electron-updater");
 
-exports.createWindow =  function(dev = true) {
+exports.createWindow =  function(i18n, dev = true) {
     // Setup permission handler
     session.defaultSession.setPermissionCheckHandler((webContents, permission) => {
         return true;
@@ -124,9 +124,9 @@ exports.createWindow =  function(dev = true) {
            app.quit();
     });
 
-    const templateFull = getMenuAfterAuth(win);
+    const templateFull = getMenuAfterAuth(win, i18n);
 
-    const templateNotFull = getMenuBeforeAuth(win);
+    const templateNotFull = getMenuBeforeAuth(win, i18n);
 
     Menu.setApplicationMenu(Menu.buildFromTemplate(templateNotFull));
     downloadManager();
@@ -249,41 +249,42 @@ function downloadManager2(win) {
     });
 }
 
-
-function getMenuBeforeAuth(win) {
+function getMenuBeforeAuth(win, i18n) {
+    console.log('-------i18n ' , i18n)
+    console.log('-------i18n ' , i18n.t)
     return [{
-        label: "Application",
+        label: i18n.t('application'),
         submenu: [
-            {label: "À propos de Inria", selector: "orderFrontStandardAboutPanel:"},
+            {label: i18n.t('about'), selector: "orderFrontStandardAboutPanel:"},
             {
-                label: "Vérifier les mises à jour",  click: function () {
+                label: i18n.t('update'),  click: function () {
                     showNoUpdatesDialog = true;
-                    autoUpdater.checkForUpdatesAndNotify();
+                    autoUpdater.checkForUpdatesAndNotify()
                 }
             },
             {type: "separator"},
             {
-                label: "Quit", accelerator: "Command+Q", click: function () {
+                label: i18n.t('quit'), accelerator: "Command+Q", click: function () {
                     app.quit();
                 }
             }
         ]
     }, {
-        label: "Modifier",
+        label: i18n.t('edit'),
         submenu: [
-            {label: "Annuler", accelerator: "CmdOrCtrl+Z", selector: "undo:"},
-            {label: "Rétablir", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:"},
+            {label: i18n.t('cancel'), accelerator: "CmdOrCtrl+Z", selector: "undo:"},
+            {label: i18n.t('restore'), accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:"},
             {type: "separator"},
-            {label: "Couper", accelerator: "CmdOrCtrl+X", selector: "cut:"},
-            {label: "Copier", accelerator: "CmdOrCtrl+C", selector: "copy:"},
-            {label: "Coller", accelerator: "CmdOrCtrl+V", selector: "paste:"},
-            {label: "Tout sélectionner", accelerator: "CmdOrCtrl+A", selector: "selectAll:"}
+            {label: i18n.t('cut'), accelerator: "CmdOrCtrl+X", selector: "cut:"},
+            {label: i18n.t('copy'), accelerator: "CmdOrCtrl+C", selector: "copy:"},
+            {label: i18n.t('paste'), accelerator: "CmdOrCtrl+V", selector: "paste:"},
+            {label: i18n.t('selectAll'), accelerator: "CmdOrCtrl+A", selector: "selectAll:"}
         ]
     }, {
-        label: "Fenêtre",
+        label: i18n.t('window'),
         submenu: [
             {
-                label: "Recharger", accelerator: "CmdOrCtrl+R", click: function () {
+                label: i18n.t('reload'), accelerator: "CmdOrCtrl+R", click: function () {
                     app.badgeCount = 0;
                     win.reload();
                     // win.loadURL(`file://${__dirname}/dist/index.html`);
@@ -294,21 +295,21 @@ function getMenuBeforeAuth(win) {
     ];
 }
 
-function getMenuAfterAuth(win) {
+function getMenuAfterAuth (win, i18n) {
     return [{
-        label: "Application",
+        label: i18n.t('application'),
         submenu: [
-            {label: "À propos de Inria", selector: "orderFrontStandardAboutPanel:"},
+            {label: i18n.t('about'), selector: "orderFrontStandardAboutPanel:"},
             {
-                label: "Vérifier les mises à jour",  click: function () {
+                label: i18n.t('update'),  click: function () {
                     showNoUpdatesDialog = true;
-                    autoUpdater.checkForUpdatesAndNotify();
+                    autoUpdater.checkForUpdatesAndNotify()
                 }
             },
-            // { label: "Mon profil", selector: "CmdOrCtrl+,",  click: function() { shell.openExternal('https://discuss.piman2-0.fr/account/profil'); }},
+            // { label: i18n.t('profil'), selector: "CmdOrCtrl+,",  click: function() { shell.openExternal('https://discuss.piman2-0.fr/account/profil'); }},
             {type: "separator"},
             {
-                label: "Mon profil", accelerator: "CmdOrCtrl+P", click: function (menuItem, browserWindow) {
+                label: i18n.t('profil'), accelerator: "CmdOrCtrl+P", click: function (menuItem, browserWindow) {
                     let modifiers = [];
                     modifiers.push('meta'); // 'control', 'meta', etc.
                     modifiers.push('control');
@@ -318,7 +319,7 @@ function getMenuAfterAuth(win) {
                 }
             },
             {
-                label: "Paramètres", accelerator: "CmdOrCtrl+,", click: function (menuItem, browserWindow) {
+                label: i18n.t('settings'), accelerator: "CmdOrCtrl+,", click: function (menuItem, browserWindow) {
                     let modifiers = [];
                     modifiers.push('meta'); // 'control', 'meta', etc.
                     modifiers.push('control');
@@ -329,27 +330,27 @@ function getMenuAfterAuth(win) {
             },
             {type: "separator"},
             {
-                label: "Quit", accelerator: "Command+Q", click: function () {
+                label: i18n.t('quit'), accelerator: "Command+Q", click: function () {
                     app.quit();
                 }
             }
         ]
     }, {
-        label: "Modifier",
+        label: i18n.t('edit'),
         submenu: [
-            {label: "Annuler", accelerator: "CmdOrCtrl+Z", selector: "undo:"},
-            {label: "Rétablir", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:"},
+            {label: i18n.t('cancel'), accelerator: "CmdOrCtrl+Z", selector: "undo:"},
+            {label: i18n.t('restore'), accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:"},
             {type: "separator"},
-            {label: "Couper", accelerator: "CmdOrCtrl+X", selector: "cut:"},
-            {label: "Copier", accelerator: "CmdOrCtrl+C", selector: "copy:"},
-            {label: "Coller", accelerator: "CmdOrCtrl+V", selector: "paste:"},
-            {label: "Tout sélectionner", accelerator: "CmdOrCtrl+A", selector: "selectAll:"}
+            {label: i18n.t('cut'), accelerator: "CmdOrCtrl+X", selector: "cut:"},
+            {label: i18n.t('copy'), accelerator: "CmdOrCtrl+C", selector: "copy:"},
+            {label: i18n.t('paste'), accelerator: "CmdOrCtrl+V", selector: "paste:"},
+            {label: i18n.t('selectAll'), accelerator: "CmdOrCtrl+A", selector: "selectAll:"}
         ]
     }, {
-        label: "Fenêtre",
+        label: i18n.t('window'),
         submenu: [
             {
-                label: "Recharger", accelerator: "CmdOrCtrl+R", click: function () {
+                label: i18n.t('reload'), accelerator: "CmdOrCtrl+R", click: function () {
                     app.badgeCount = 0;
                     win.reload();
                     // win.loadURL(`file://${__dirname}/dist/index.html`);
@@ -359,3 +360,6 @@ function getMenuAfterAuth(win) {
     }
     ];
 }
+
+exports.getMenuBeforeAuth = getMenuBeforeAuth;
+exports.getMenuAfterAuth = getMenuAfterAuth;

@@ -1,6 +1,7 @@
-const {app, BrowserWindow, ipcMain, systemPreferences, protocol } = require('electron');
+const {app, BrowserWindow, ipcMain, systemPreferences, protocol, Menu  } = require('electron');
+const i18n = require('./configs/i18next.config');
 
-const { createWindow } = require('./windows');
+const { createWindow, getMenuAfterAuth, getMenuBeforeAuth } = require('./windows');
 const { initUpdater } = require('./updater');
 
 let dev = false;
@@ -10,9 +11,23 @@ let splash;
 let result;
 // Create window on electron intialization
 app.on('ready', async () => {
-    console.log('ready -----');
-    result = await createWindow(dev);
+    i18n.on('loaded', (loaded) => {
+        const lang = app.getLocale().startsWith('en') ? 'en' : app.getLocale().startsWith('fr') ? 'fr' : app.getLocale().startsWith('es') ? 'es' : 'fr'
+        i18n.changeLanguage(lang);
+        i18n.off('loaded');
+    });
+
+    i18n.on('languageChanged', (lng) => {
+        const lang = ['en', 'fr', 'es'].includes(lng ) ? lng : 'fr';
+        const templateFull = getMenuAfterAuth(win, i18n);
+
+        const templateNotFull = getMenuBeforeAuth(win, i18n);
+
+        Menu.setApplicationMenu(Menu.buildFromTemplate(templateNotFull));
+    });
+    result = await createWindow(i18n, dev);
     // console.log('result ----------------' , result);
+    console.log('token ----------------' , process.env.GH_TOKEN);
     splash = result.splash;
     win = result.win;
 });

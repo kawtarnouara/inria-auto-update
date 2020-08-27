@@ -1,7 +1,7 @@
 {
   "name": "discuss",
   "description": "Inria, La solution de communication privee, dediee, sur mesure et chiffree",
-  "version": "4.0.8",
+  "version": "4.0.9",
   "main": "./main.js",
   "author": "Piman Security",
   "scripts": {
@@ -14,6 +14,8 @@
     "electron-dl": "^1.12.0",
     "electron-progressbar": "^1.1.0",
     "electron-updater": "^4.0.0",
+    "i18next": "^19.7.0",
+    "i18next-node-fs-backend": "^2.1.3",
     "fs": "0.0.1-security",
     "image-data-uri": "^2.0.0",
     "offline-js": "^0.7.19"
@@ -39,11 +41,8 @@
       "output": "app",
       "buildResources": "build"
     },
-    "productName": "Private Discuss",
-    "publish": {
-      "provider": "github",
-      "token": "80ab8a6f230f8ef28898c152907cae3b2eaa43b6"
-    }
+    "productName": "Inria",
+    "afterSign": "/Users/kawtar/apps/inria-discuss-electron-update/electron/notarize.js"
   },
   "mac": {
     "title": "Inria",

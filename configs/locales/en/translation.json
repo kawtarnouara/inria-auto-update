@@ -1,0 +1,17 @@
+{
+  "application": "Application",
+  "about": "About Inria",
+  "update": "Check for updates",
+  "profile": "My profile",
+  "settings": "Settings",
+  "quit": "Quit",
+  "edit": "Edit",
+  "cancel": "Cancel",
+  "restore": "Restore",
+  "copy": "Copy",
+  "cut": "Cut",
+  "paste": "Paste",
+  "selectAll": "Select all",
+  "window": "Window",
+  "reload": "Reload"
+}
