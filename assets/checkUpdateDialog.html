@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/icon?family=Roboto" rel="stylesheet">
     <style>
+        body {
+            font-family: Roboto, sans-serif !important;
+        }
         button{
             display: inline-block;
             margin-bottom: 0;
@@ -99,8 +103,8 @@
     old_version.innerText = findGetParameter('old_version');
 
 
-    const description_info = document.getElementById('description');
-    description_info.innerText = findGetParameter('description');
+    const description_info = document.getElementById('details');
+    description_info.innerHTML = findGetParameter('description');
 
 
 
