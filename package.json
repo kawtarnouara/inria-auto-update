@@ -1,7 +1,7 @@
 {
-  "name": "discuss",
+  "name": "inria-discuss",
   "description": "Inria, La solution de communication privee, dediee, sur mesure et chiffree",
-  "version": "4.0.9",
+  "version": "4.2.1",
   "main": "./main.js",
   "author": "Piman Security",
   "scripts": {
@@ -18,7 +18,8 @@
     "i18next-node-fs-backend": "^2.1.3",
     "fs": "0.0.1-security",
     "image-data-uri": "^2.0.0",
-    "offline-js": "^0.7.19"
+    "offline-js": "^0.7.19",
+    "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
     "electron": "7.1.2",

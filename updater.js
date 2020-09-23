@@ -3,6 +3,7 @@ const {autoUpdater} = require("electron-updater");
 const ProgressBar = require('electron-progressbar');
 const { BrowserWindow } = require('electron')
 var dialogUpdate;
+var dialogCheckUpdate;
 exports.showNoUpdatesDialog = false;
 exports.initUpdater = (mainWindow) => {
 
@@ -15,29 +16,7 @@ exports.initUpdater = (mainWindow) => {
     });
     autoUpdater.on('update-available', (info) => {
         // mainWindow.webContents.send('update_available');
-        console.info('updaare')
-        if (!progressBar) {
-            progressBar = new ProgressBar({
-                indeterminate: false,
-                title: 'Mise à jour - Inria',
-                text: 'En téléchargement ...',
-                detail: 'Préparation de la nouvelle version ...',
-                closeOnComplete: false,
-                browserWindow: {
-                    parent: null,
-                    modal: true,
-                    resizable: false,
-                    closable: false,
-                    minimizable: false,
-                    maximizable: false,
-                    width: 500,
-                    height: 170,
-                    webPreferences: {
-                        nodeIntegration: true
-                    }
-                }
-            });
-        }
+        getUpdateInfo(info.version)
     });
     autoUpdater.on('update-not-available', (info) => {
         autoUpdater.on('update-not-available', () => {
@@ -93,6 +72,36 @@ exports.initUpdater = (mainWindow) => {
         autoUpdater.quitAndInstall();
     });
 
+    ipcMain.on('cancel_update', () => {
+        dialogCheckUpdate.hide();
+    });
+
+    ipcMain.on('update_app', () => {
+        dialogCheckUpdate.hide();
+        if (!progressBar) {
+            progressBar = new ProgressBar({
+                indeterminate: false,
+                title: 'Mise à jour - Piman Discuss',
+                text: 'En téléchargement ...',
+                detail: 'Préparation de la nouvelle version ...',
+                closeOnComplete: false,
+                browserWindow: {
+                    parent: null,
+                    modal: true,
+                    resizable: false,
+                    closable: false,
+                    minimizable: false,
+                    maximizable: false,
+                    width: 500,
+                    height: 170,
+                    webPreferences: {
+                        nodeIntegration: true
+                    }
+                }
+            });
+        }
+    });
+
 };
 
 function sendStatusToWindow(text) {
@@ -124,6 +133,61 @@ function updateDialog(dialogTitle, options) {
     let query = encodeQueryData(options);
     dialogFile.loadURL(`file://${__dirname}/assets/updateDialog.html?${query}`);
     return dialogFile;
+}
+
+function checkupdateDialog  (dialogTitle, options)   {
+    let dialogFile = new BrowserWindow({
+        title: dialogTitle,
+        width: 600,
+        height: 450,
+        frame: false,
+        backgroundColor: 'white',
+        nodeIntegration: 'iframe',
+        resizable: false,
+        closable: false,
+        fullscreenable: false,
+        alwaysOnTop: true,
+        webPreferences: {
+            nodeIntegration: true
+        },
+        center: true
+    });
+
+    let query = encodeQueryData(options);
+    dialogFile.loadURL(`file://${__dirname}/assets/checkUpdateDialog.html?${query}`);
+    return dialogFile;
+}
+
+function getUpdateInfo (version)  {
+    const { net } = require('electron')
+    var body = JSON.stringify({ platform: 'desktop', os: 'macos', version: version, organization_id: 204 });
+    const request = net.request({
+        method: 'POST',
+        url: 'https://api-v2.private-discuss.com/v1.0/release/get',
+        protocol: 'https:',
+    });
+    request.on('response', (response) => {
+        console.log(`STATUS: ${response.statusCode} ${response.toString()}`);
+        console.log(`HEADERS: ${JSON.stringify(response.headers)}`);
+
+        response.on('data', (chunk) => {
+            console.log(`BODY: ${chunk}`)
+            const data = JSON.parse(chunk.toString()).result.data;
+            const version = data.version;
+            const description = data.description;
+            const force_update = data.force_update;
+            dialogCheckUpdate = checkupdateDialog('', {
+                version: version,
+                old_version: app.getVersion(),
+                details: description,
+                force_update: force_update,
+            });
+        });
+    });
+    request.setHeader('Content-Type', 'application/json');
+    request.write(body, 'utf-8');
+    request.end();
+
 }
 
 function encodeQueryData(data) {
