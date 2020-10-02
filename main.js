@@ -9,6 +9,13 @@ let dev = false;
 let win;
 let splash;
 let result;
+let mainurl;
+let mainev;
+// Create window on electron intialization
+app.on('open-url', function (ev, url) {
+    mainev = ev; mainurl = url;
+
+});
 // Create window on electron intialization
 app.on('ready', async () => {
     i18n.on('loaded', (loaded) => {
@@ -30,6 +37,11 @@ app.on('ready', async () => {
     console.log('token ----------------' , process.env.GH_TOKEN);
     splash = result.splash;
     win = result.win;
+    win.webContents.on('did-finish-load', () => {
+        if (mainurl) {
+            win.webContents.send('redirect-to-url', mainurl);
+        }
+    });
 });
 
 

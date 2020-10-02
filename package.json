@@ -43,7 +43,13 @@
       "buildResources": "build"
     },
     "productName": "Inria",
-    "afterSign": "/Users/kawtar/apps/inria-discuss-electron-update/electron/notarize.js"
+    "afterSign": "/Users/kawtar/apps/inria-discuss-electron-update/electron/notarize.js",
+    "protocols": [
+      {
+        "name": "Inria",
+        "schemes": ["inria-discuss"]
+      }
+    ]
   },
   "mac": {
     "title": "Inria",
