@@ -4,7 +4,7 @@ const ProgressBar = require('electron-progressbar');
 const { BrowserWindow } = require('electron')
 var dialogUpdate;
 var dialogCheckUpdate;
-exports.showNoUpdatesDialog = false;
+var showNoUpdatesDialog = exports.showNoUpdatesDialog = false;
 exports.initUpdater = (mainWindow) => {
 
     autoUpdater.requestHeaders = { "PRIVATE-TOKEN": "Yra7hy4NWZPvgsNFWWo_" };
