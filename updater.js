@@ -8,7 +8,7 @@ exports.showNoUpdatesDialog = false;
 exports.initUpdater = (mainWindow) => {
 
     autoUpdater.requestHeaders = { "PRIVATE-TOKEN": "Yra7hy4NWZPvgsNFWWo_" };
-    autoUpdater.autoDownload = true;
+    autoUpdater.autoDownload = false;
     autoUpdater.checkForUpdatesAndNotify();
     let progressBar;
     autoUpdater.on('checking-for-update', () => {
@@ -32,7 +32,9 @@ exports.initUpdater = (mainWindow) => {
     autoUpdater.on('error', (err) => {
         // sendStatusToWindow('Error in auto-updater. ' + err);
         // mainWindow.webContents.send('update_error');
-        progressBar.close();
+        if (progressBar){
+            progressBar.close();
+        }
         updateDialog('Mise à jour - Inria', {
             title: 'Mise à jour échouée',
             details: "Impossible de terminer la mises à jour de votre application !",
@@ -57,7 +59,9 @@ exports.initUpdater = (mainWindow) => {
         //     autoUpdater.quitAndInstall();
         // }, 5000)
         // mainWindow.webContents.send('update_downloaded');
-        progressBar.close();
+        if (progressBar){
+            progressBar.close();
+        }
          dialogUpdate = updateDialog('Mise à jour - Inria', {
             title: 'Mise à jour terminée',
             details: "Votre application a été mise à jour. Vous devez redémarrer l'application maintenant",
@@ -69,15 +73,20 @@ exports.initUpdater = (mainWindow) => {
 
     ipcMain.on('restart_app', () => {
         dialogUpdate.destroy();
+        dialogUpdate = null;
         autoUpdater.quitAndInstall();
     });
 
     ipcMain.on('cancel_update', () => {
-        dialogCheckUpdate.hide();
+        dialogCheckUpdate.destroy();
+        dialogCheckUpdate = null;
     });
 
+
     ipcMain.on('update_app', () => {
-        dialogCheckUpdate.hide();
+        autoUpdater.downloadUpdate();
+        dialogCheckUpdate.destroy();
+        dialogCheckUpdate = null;
         if (!progressBar) {
             progressBar = new ProgressBar({
                 indeterminate: false,
