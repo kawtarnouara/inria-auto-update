@@ -6,8 +6,10 @@ const { dialog } = require('electron')
 var dialogUpdate;
 var dialogCheckUpdate;
 var showNoUpdatesDialog = exports.showNoUpdatesDialog = false;
+let backendData;
+let autoUpdateVersion;
 exports.initUpdater = (mainWindow) => {
-
+    getUpdateInfo();
     autoUpdater.requestHeaders = { "PRIVATE-TOKEN": "Yra7hy4NWZPvgsNFWWo_" };
     autoUpdater.autoDownload = false;
     autoUpdater.checkForUpdatesAndNotify();
@@ -16,8 +18,20 @@ exports.initUpdater = (mainWindow) => {
         // sendStatusToWindow('Checking for update...');
     });
     autoUpdater.on('update-available', (info) => {
+        autoUpdateVersion = info.version;
         // mainWindow.webContents.send('update_available');
-        getUpdateInfo(info.version)
+        if (backendData && backendData.version.toString() === info.version.toString()){
+            const data = backendData;
+            const version = data.version;
+            const description = data.description;
+            const force_update = data.force_update;
+            dialogCheckUpdate = checkupdateDialog('', {
+                version: version,
+                old_version: app.getVersion(),
+                details: description ? description : '',
+                force_update: force_update,
+            });
+        }
     });
     autoUpdater.on('update-not-available', (info) => {
         autoUpdater.on('update-not-available', () => {
@@ -168,9 +182,9 @@ function checkupdateDialog  (dialogTitle, options)   {
     return dialogFile;
 }
 
-function getUpdateInfo (version)  {
+function getUpdateInfo ()  {
     const { net } = require('electron')
-    var body = JSON.stringify({ platform: 'desktop', os: 'macos', version: version, organization_id: 204 });
+    var body = JSON.stringify({ platform: 'desktop', os: 'macos', organization_id: 204 });
     const request = net.request({
         method: 'POST',
         url: 'https://api-v2.private-discuss.com/v1.0/release/get',
@@ -181,18 +195,15 @@ function getUpdateInfo (version)  {
         console.log(`HEADERS: ${JSON.stringify(response.headers)}`);
 
         response.on('data', (chunk) => {
-            console.log(`BODY: ${chunk}`)
-            const data = JSON.parse(chunk.toString()).result.data;
-            const version = data.version;
-            const description = data.description;
-            const force_update = data.force_update;
-            dialogCheckUpdate = checkupdateDialog('', {
-                version: version,
-                old_version: app.getVersion(),
-                details: description,
-                force_update: force_update,
-            });
+            console.log(`BODY: ${JSON.parse(chunk.toString()).result.data}`)
+            backendData = JSON.parse(chunk.toString()).result.data;
         });
+        response.on('error', (error) => {
+            console.log('error :' + JSON.stringify(error))
+        });
+    });
+    request.on('error', (error) => {
+        console.log('error :' + JSON.stringify(error))
     });
     request.setHeader('Content-Type', 'application/json');
     request.write(body, 'utf-8');
