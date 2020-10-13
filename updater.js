@@ -1,7 +1,8 @@
-const { ipcMain } = require('electron');
+const { app, ipcMain } = require('electron');
 const {autoUpdater} = require("electron-updater");
 const ProgressBar = require('electron-progressbar');
 const { BrowserWindow } = require('electron')
+const { dialog } = require('electron')
 var dialogUpdate;
 var dialogCheckUpdate;
 var showNoUpdatesDialog = exports.showNoUpdatesDialog = false;
