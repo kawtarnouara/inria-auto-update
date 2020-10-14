@@ -24,10 +24,14 @@ exports.initUpdater = (mainWindow) => {
             const data = backendData;
             const version = data.version;
             const description = data.description;
-            const force_update = data.force_update;
+            let force_update = data.force_update;
+            const oldVersion = app.getVersion();
+            const min_functionning_version = data.min_functionning_version;
+            const isFunctionning = versionCompare(oldVersion, min_functionning_version);
+            force_update = isFunctionning === -1 ? 1 : force_update;
             dialogCheckUpdate = checkupdateDialog('', {
                 version: version,
-                old_version: app.getVersion(),
+                old_version: oldVersion,
                 details: description ? description : '',
                 force_update: force_update,
             });
@@ -216,4 +220,49 @@ function encodeQueryData(data) {
     for (let d in data)
         ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
     return ret.join('&');
+}
+
+function versionCompare(v1, v2, options = {zeroExtend: false, lexicographical: false}) {
+    const lexicographical = options && options.lexicographical,
+        zeroExtend = options && options.zeroExtend;
+    let v1parts = v1.split('.');
+    let v2parts = v2.split('.');
+
+    function isValidPart(x) {
+        return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
+    }
+
+    if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
+        return NaN;
+    }
+
+    if (zeroExtend) {
+        while (v1parts.length < v2parts.length) { v1parts.push('0'); }
+        while (v2parts.length < v1parts.length) { v2parts.push('0'); }
+    }
+
+    if (!lexicographical) {
+        v1parts = v1parts.map(Number);
+        v2parts = v2parts.map(Number);
+    }
+
+    for (let i = 0; i < v1parts.length; ++i) {
+        if (v2parts.length === i) {
+            return 1;
+        }
+
+        if (v1parts[i] === v2parts[i]) {
+            continue;
+        } else if (v1parts[i] > v2parts[i]) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+
+    if (v1parts.length !== v2parts.length) {
+        return -1;
+    }
+
+    return 0;
 }
