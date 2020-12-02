@@ -93,7 +93,10 @@ exports.initUpdater = (mainWindow) => {
     ipcMain.on('restart_app', () => {
         dialogUpdate.destroy();
         dialogUpdate = null;
-        autoUpdater.quitAndInstall();
+        setImmediate(() => {
+            app.removeAllListeners('window-all-closed');
+            autoUpdater.quitAndInstall();
+        });
     });
 
     ipcMain.on('cancel_update', () => {
