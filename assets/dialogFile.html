@@ -179,7 +179,7 @@
     }
     const { shell, remote } = require('electron');
     function openFile() {
-        shell.openItem(findGetParameter('file'));
+        shell.openPath(findGetParameter('file'));
         let window = remote.getCurrentWindow();
         window.close();
     }
