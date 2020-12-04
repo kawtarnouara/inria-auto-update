@@ -2,7 +2,7 @@ const {app, BrowserWindow, Menu, session } = require('electron');
 const ProgressBar = require('electron-progressbar');
 const { downloadManager } = require('./download');
 const path = require('path');
-let { showNoUpdatesDialog } = require('./updater');
+const {getUpdateInfo } = require('./updater');
 
 const urlM = require('url');
 const {autoUpdater} = require("electron-updater");
@@ -260,7 +260,7 @@ function getMenuBeforeAuth(win, i18n) {
             {label: i18n.t('about'), selector: "orderFrontStandardAboutPanel:"},
             {
                 label: i18n.t('update'),  click: function () {
-                    showNoUpdatesDialog = true;
+                    getUpdateInfo(true);
                     autoUpdater.checkForUpdatesAndNotify()
                 }
             },
@@ -304,7 +304,7 @@ function getMenuAfterAuth (win, i18n) {
             {label: i18n.t('about'), selector: "orderFrontStandardAboutPanel:"},
             {
                 label: i18n.t('update'),  click: function () {
-                    showNoUpdatesDialog = true;
+                    getUpdateInfo(true);
                     autoUpdater.checkForUpdatesAndNotify()
                 }
             },

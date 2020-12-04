@@ -5,11 +5,11 @@ const { BrowserWindow } = require('electron')
 const { dialog } = require('electron')
 var dialogUpdate;
 var dialogCheckUpdate;
-var showNoUpdatesDialog = exports.showNoUpdatesDialog = false;
+var showNoUpdatesDialog = false;
 let backendData;
 let autoUpdateVersion;
 exports.initUpdater = (mainWindow) => {
-    getUpdateInfo();
+    getUpdateInfo(false);
     autoUpdater.requestHeaders = { "PRIVATE-TOKEN": "Yra7hy4NWZPvgsNFWWo_" };
     autoUpdater.autoDownload = false;
     autoUpdater.checkForUpdatesAndNotify();
@@ -34,6 +34,12 @@ exports.initUpdater = (mainWindow) => {
                 old_version: oldVersion,
                 details: description ? description : '',
                 force_update: force_update,
+            });
+        } else  if (showNoUpdatesDialog){
+            dialog.showMessageBox({
+                title: 'Piman Discuss',
+                message: 'Piman Discuss est à jour.',
+                detail: 'Version ' + app.getVersion()
             });
         }
     });
@@ -189,7 +195,9 @@ function checkupdateDialog  (dialogTitle, options)   {
     return dialogFile;
 }
 
-function getUpdateInfo ()  {
+exports.getUpdateInfo = getUpdateInfo = (showNoUpdates)  => {
+    showNoUpdatesDialog = showNoUpdates;
+    console.log('getUpdateInfo ' , showNoUpdatesDialog)
     const { net } = require('electron')
     var body = JSON.stringify({ platform: 'desktop', os: 'macos', organization_id: 204 });
     const request = net.request({
